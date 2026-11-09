@@ -9,12 +9,14 @@ class Quiz:
     def __init__(self, question, choices, answer):
         if len(choices) != 4 or not isinstance(answer, int) or answer not in range(1, 5):
             raise ValueError("퀴즈는 선택지 4개와 정답 번호 1~4가 필요합니다.")
+
         self.question = question
         self.choices = choices
         self.answer = answer
 
     def display(self):
         print(f"\n{self.question}")
+
         for i, choice in enumerate(self.choices, 1):
             print(f"{i}. {choice}")
 
@@ -23,7 +25,7 @@ class Quiz:
 
 
 class QuizGame:
-    """퀴즈 진행, 최고 점수 및 데이터 저장을 관리합니다."""
+    """퀴즈 진행, 문제 관리, 최고 점수 및 데이터 저장을 담당합니다."""
 
     def __init__(self, filename="state.json"):
         self.filename = filename
@@ -32,20 +34,37 @@ class QuizGame:
         self.load_state()
 
     def default_quizzes(self):
+        """기본 퀴즈 5개를 생성합니다."""
         return [
-            Quiz("파이썬에서 리스트에 요소를 추가하는 함수는?",
-                 ["append", "pop", "sort", "clear"], 1),
-            Quiz("파이썬 파일의 확장자는?",
-                 [".txt", ".py", ".json", ".exe"], 2),
-            Quiz("출력할 때 사용하는 함수는?",
-                 ["input", "len", "print", "type"], 3),
-            Quiz("정수형 데이터 타입을 무엇이라 하나요?",
-                 ["str", "bool", "float", "int"], 4),
-            Quiz("리스트의 길이를 구하는 함수는?",
-                 ["len", "list", "max", "sum"], 1),
+            Quiz(
+                "파이썬에서 리스트에 요소를 추가하는 함수는?",
+                ["append", "pop", "sort", "clear"],
+                1
+            ),
+            Quiz(
+                "파이썬 파일의 확장자는?",
+                [".txt", ".py", ".json", ".exe"],
+                2
+            ),
+            Quiz(
+                "출력할 때 사용하는 함수는?",
+                ["input", "len", "print", "type"],
+                3
+            ),
+            Quiz(
+                "정수형 데이터 타입을 무엇이라 하나요?",
+                ["str", "bool", "float", "int"],
+                4
+            ),
+            Quiz(
+                "리스트의 길이를 구하는 함수는?",
+                ["len", "list", "max", "sum"],
+                1
+            ),
         ]
 
     def load_state(self):
+        """JSON 파일에서 퀴즈와 최고 점수를 불러옵니다."""
         defaults = self.default_quizzes()
         default_map = {q.question: q for q in defaults}
 
@@ -58,6 +77,7 @@ class QuizGame:
                 data = json.load(f)
 
             saved_score = data.get("high_score", 0)
+
             if not isinstance(saved_score, int) or saved_score < 0:
                 raise ValueError("최고 점수 데이터가 올바르지 않습니다.")
 
@@ -67,11 +87,17 @@ class QuizGame:
             for item in data["quizzes"]:
                 if "choices" in item:
                     loaded.append(
-                        Quiz(item["question"], item["choices"], item["answer"])
+                        Quiz(
+                            item["question"],
+                            item["choices"],
+                            item["answer"]
+                        )
                     )
+
                 elif item["question"] in default_map:
                     loaded.append(default_map[item["question"]])
                     converted = True
+
                 else:
                     raise ValueError("변환할 수 없는 기존 퀴즈 데이터입니다.")
 
@@ -84,10 +110,12 @@ class QuizGame:
         except (OSError, json.JSONDecodeError, KeyError, TypeError, ValueError) as error:
             print(f"데이터를 불러오지 못했습니다: {error}")
             print("기본 퀴즈 데이터로 시작합니다.")
+
             self.quizzes = defaults
             self.high_score = 0
 
     def save_state(self):
+        """퀴즈와 최고 점수를 JSON 파일에 저장합니다."""
         data = {
             "high_score": self.high_score,
             "quizzes": [
@@ -103,15 +131,18 @@ class QuizGame:
         try:
             with open(self.filename, "w", encoding="utf-8") as f:
                 json.dump(data, f, ensure_ascii=False, indent=4)
+
         except OSError as error:
             print(f"데이터 저장에 실패했습니다: {error}")
 
     def run(self):
+        """등록된 퀴즈를 순서대로 출제하고 점수를 계산합니다."""
         if not self.quizzes:
             print("등록된 퀴즈가 없습니다.")
             return
 
         score = 0
+
         print(f"\n=== 퀴즈 시작! 총 {len(self.quizzes)}문제 ===")
 
         for i, quiz in enumerate(self.quizzes, 1):
@@ -127,6 +158,7 @@ class QuizGame:
 
                 try:
                     answer_number = int(answer)
+
                 except ValueError:
                     print("숫자를 입력해주세요.")
                     continue
@@ -140,9 +172,13 @@ class QuizGame:
             if quiz.check_answer(answer_number):
                 print("정답입니다!")
                 score += 1
+
             else:
                 correct = quiz.choices[quiz.answer - 1]
-                print(f"오답입니다. 정답은 {quiz.answer}번 ({correct})입니다.")
+                print(
+                    f"오답입니다. 정답은 "
+                    f"{quiz.answer}번 ({correct})입니다."
+                )
 
         print(f"\n게임 종료! 점수: {score}/{len(self.quizzes)}")
 
@@ -152,7 +188,60 @@ class QuizGame:
 
         self.save_state()
 
+    def add_quiz(self):
+        """사용자가 새로운 4지선다 퀴즈를 등록합니다."""
+        print("\n=== 새 퀴즈 추가 ===")
+
+        while True:
+            question = input("문제 입력: ").strip()
+
+            if question:
+                break
+
+            print("문제는 비워둘 수 없습니다.")
+
+        choices = []
+
+        for i in range(1, 5):
+            while True:
+                choice = input(f"{i}번 선택지: ").strip()
+
+                if choice:
+                    choices.append(choice)
+                    break
+
+                print("선택지는 비워둘 수 없습니다.")
+
+        while True:
+            answer = input("정답 번호 (1~4): ").strip()
+
+            if answer in ("1", "2", "3", "4"):
+                break
+
+            print("1~4 사이의 숫자를 입력해주세요.")
+
+        new_quiz = Quiz(question, choices, int(answer))
+
+        self.quizzes.append(new_quiz)
+        self.save_state()
+
+        print("퀴즈가 추가되고 저장되었습니다!")
+
+    def list_quizzes(self):
+        """등록된 퀴즈의 문제와 선택지를 출력합니다."""
+        print("\n=== 등록된 퀴즈 목록 ===")
+
+        if not self.quizzes:
+            print("등록된 퀴즈가 없습니다.")
+            return
+
+        for i, quiz in enumerate(self.quizzes, 1):
+            print(f"\n[퀴즈 {i}]")
+            quiz.display()
+            print(f"정답: {quiz.answer}번")
+
     def show_menu(self):
+        """메인 메뉴를 표시하고 선택한 기능을 실행합니다."""
         while True:
             print("\n=== 파이썬 퀴즈 게임 메뉴 ===")
             print("1. 퀴즈 풀기")
@@ -166,16 +255,21 @@ class QuizGame:
 
                 if choice == "1":
                     self.run()
+
                 elif choice == "2":
-                    print("퀴즈 추가 기능은 다음 단계에서 구현합니다.")
+                    self.add_quiz()
+
                 elif choice == "3":
-                    print("퀴즈 목록 기능은 다음 단계에서 구현합니다.")
+                    self.list_quizzes()
+
                 elif choice == "4":
                     print(f"현재 최고 점수: {self.high_score}")
+
                 elif choice == "5":
                     self.save_state()
                     print("게임을 종료합니다.")
                     return
+
                 else:
                     print("잘못된 입력입니다. 1~5 사이의 숫자를 입력하세요.")
 
