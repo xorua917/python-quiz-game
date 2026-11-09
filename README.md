@@ -695,3 +695,31 @@ Python과 Git을 활용하여 기초 문법 학습부터 실제 프로그램 구
 ### 16.4 Git 커밋 및 브랜치 병합
 
 ![Git 개발 이력](evidence/04-git-history.png)
+
+### 16.5 EOF 안전 종료 자동 테스트
+
+메인 메뉴, 퀴즈 진행, 퀴즈 추가 과정에서 EOFError를 발생시켜
+정상 종료와 JSON 데이터 저장을 확인했습니다.
+
+- 검증 결과: 3개 테스트 PASS
+- 검증 방법: Python unittest.mock 및 임시 디렉터리 사용
+- 실제 state.json 변경 없음
+- [EOF 테스트 실행 결과](evidence/05-eof-test.txt)
+
+### 16.6 Git Clone·Pull·브랜치 병합 증빙
+
+별도 디렉터리에서 Git Clone을 수행했으며,
+원본 저장소에서 Git Pull 및 기능 브랜치 병합을 완료했습니다.
+
+- Git Clone: reflog 기록 확인
+- Git Pull: Fast-forward 기록 확인
+- 기능 브랜치 병합: 2회
+- [Git 작업 이력](evidence/06-git-workflow.txt)
+
+### 16.7 입력 검증 및 JSON 저장 오류 테스트
+
+비정상 입력, 퀴즈 추가, JSON 데이터 저장 및 저장 실패 상황을 검증했습니다.
+
+- 검증 결과: 4개 테스트 PASS
+- 임시 디렉터리에서 테스트하여 기존 데이터 보호
+- [입력 및 저장 오류 테스트 결과](evidence/07-input-storage-test.txt)
