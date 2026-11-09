@@ -20,10 +20,8 @@ class QuizGame:
             with open(self.filename, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 self.high_score = data.get('high_score', 0)
-                # JSON 데이터를 Quiz 객체 리스트로 변환
                 self.quizzes = [Quiz(q['question'], q['answer']) for q in data.get('quizzes', [])]
         
-        # 만약 불러온 퀴즈가 없다면 기본 문제 5개를 추가합니다 (평가 기준 충족)
         if not self.quizzes:
             default_quizzes = [
                 {"question": "파이썬에서 리스트에 요소를 추가하는 함수는?", "answer": "append"},
@@ -33,3 +31,38 @@ class QuizGame:
                 {"question": "리스트의 길이를 구하는 함수는?", "answer": "len"}
             ]
             self.quizzes = [Quiz(q['question'], q['answer']) for q in default_quizzes]
+
+    def save_state(self):
+        """현재 고득점과 퀴즈 목록을 파일에 저장합니다."""
+        data = {
+            'high_score': self.high_score,
+            'quizzes': [{'question': q.question, 'answer': q.answer} for q in self.quizzes]
+        }
+        with open(self.filename, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+
+    def run(self):
+        """게임을 시작합니다."""
+        print(f"\n=== 퀴즈 게임을 시작합니다! (현재 최고 점수: {self.high_score}) ===")
+        score = 0
+        
+        for i, q in enumerate(self.quizzes, 1):
+            print(f"\n문제 {i}: {q.question}")
+            user_answer = input("답변: ").strip().lower()
+            
+            if user_answer == q.answer.lower():
+                print("정답입니다! ✨")
+                score += 1
+            else:
+                print(f"오답입니다. 정답은 [{q.answer}]입니다.")
+        
+        print(f"\n게임 종료! 당신의 점수는 {score}/{len(self.quizzes)}입니다.")
+        
+        if score > self.high_score:
+            print(f"🎊 축하합니다! 새로운 최고 기록입니다! ({score}점)")
+            self.high_score = score
+            self.save_state()
+
+if __name__ == "__main__":
+    game = QuizGame()
+    game.run()
