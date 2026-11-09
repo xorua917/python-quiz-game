@@ -675,3 +675,23 @@ git status -sb
 **GitHub:** https://github.com/xorua917/python-quiz-game
 
 Python과 Git을 활용하여 기초 문법 학습부터 실제 프로그램 구현, 데이터 저장, 버전 관리까지 경험한 프로젝트입니다.
+
+---
+
+## 16. 실행 화면 증빙
+
+### 16.1 Python 개발 환경
+
+![Python 개발 환경](evidence/01-python-environment.png)
+
+### 16.2 4지선다 퀴즈 실행
+
+![퀴즈 실행 및 정답 판정](evidence/02-quiz-play.png)
+
+### 16.3 JSON 데이터 저장
+
+![JSON 데이터 영속성 확인](evidence/03-json-persistence.png)
+
+### 16.4 Git 커밋 및 브랜치 병합
+
+![Git 개발 이력](evidence/04-git-history.png)
