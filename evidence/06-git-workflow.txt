@@ -30,18 +30,18 @@ f295a44 HEAD@{11}: merge feature/quiz-refactor: Merge made by the 'ort' strategy
 * 0fb99c3 Docs: Complete mission requirements and design documentation
 * 62c4e5f Docs: Expand quiz game documentation
 *   ce2a72d Merge feature/menu-system into main
-|\  
+|\
 | * a144b65 Fix: Add corrupted JSON backup and recovery
 | * d0789ca Feat: Add quiz creation and listing features
 | * a1b6396 Feat: Convert quizzes to multiple-choice format
 | * 434bf67 Feat: Restore interactive quiz menu
-|/  
+|/
 *   f295a44 Merge feature/quiz-refactor into main
-|\  
+|\
 | * 01ef926 feat: 게임 실행 및 저장 로직 구현 완료
 | * 09b53d9 feat: state.json 연동 및 기본 퀴즈 5개 추가
 | * 5a9f45f feat: Quiz 및 QuizGame 클래스 기본 구조 정의
-|/  
+|/
 * 758ede2 Docs: Update README with project details
 * 8d009c8 Feat: Add menu system and game loop
 * 6b4cabf Feat: Implement basic quiz logic
