@@ -62,7 +62,38 @@ class QuizGame:
             print(f"🎊 축하합니다! 새로운 최고 기록입니다! ({score}점)")
             self.high_score = score
             self.save_state()
+    def show_menu(self):
+        """사용자가 게임 기능을 선택하는 메인 메뉴"""
+        while True:
+            print("\n=== 파이썬 퀴즈 게임 메뉴 ===")
+            print("1. 퀴즈 풀기")
+            print("2. 퀴즈 추가")
+            print("3. 퀴즈 목록")
+            print("4. 최고 점수 확인")
+            print("5. 종료")
 
+            try:
+                choice = input("메뉴 선택 (1~5): ").strip()
+
+                if choice == "1":
+                    self.run()
+                elif choice == "2":
+                    print("퀴즈 추가 기능은 다음 단계에서 구현합니다.")
+                elif choice == "3":
+                    print("퀴즈 목록 기능은 다음 단계에서 구현합니다.")
+                elif choice == "4":
+                    print(f"현재 최고 점수: {self.high_score}")
+                elif choice == "5":
+                    self.save_state()
+                    print("게임을 종료합니다.")
+                    return
+                else:
+                    print("잘못된 입력입니다. 1~5 사이의 숫자를 입력하세요.")
+
+            except (KeyboardInterrupt, EOFError):
+                print("\n입력이 중단되었습니다. 게임을 종료합니다.")
+                self.save_state()
+                return
 if __name__ == "__main__":
     game = QuizGame()
-    game.run()
+    game.show_menu()
