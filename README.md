@@ -77,6 +77,7 @@ python-quiz-game/
 ├── README.md
 ├── .gitignore
 ├── evidence/        # 실행 화면 및 검증 기록
+├── state.example.json  # 기본 퀴즈 5개의 저장 예시
 └── state.json       # 실행 중 생성되는 로컬 데이터
 ```
 
@@ -256,6 +257,10 @@ python3 main.py
 ## 8. JSON 데이터 저장 구조
 
 ### 8.1 state.json 예시
+
+실제 사용자 기록은 `state.json`에 로컬로 저장하며, GitHub에는 포함하지 않습니다.
+
+평가자가 전체 저장 구조를 확인할 수 있도록 [기본 퀴즈 5개의 JSON 예시](state.example.json)를 제공합니다.
 
 ```json
 {
